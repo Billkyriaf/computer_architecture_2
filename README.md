@@ -28,17 +28,44 @@ First you need to run the following benchmarks to provide the appropriate files 
 <br />
 
 ## 1.1. The total number of committed instructions
+In the table below we will see how many orders were executed and how many were committed <br />
 
-For the first benchmark (first command mentioned above)
+| BenchMark | Committed Instructions | Executed Instructions | Memory Types | 
+| :---: | :---: | :---: | :---: |
+| Specbzip | 100000001 | 100196363 | DDR3_1600_8x8 |
+| Specmcf | 100000000 | 101102729  | DDR3_1600_8x8 |
+| Spechmmer | 100000000 | 101102729 | DDR3_1600_8x8 |
+| Specsjeng | 100000000 | 184174857 | DDR3_1600_8x8 | 
+| Speclibm | 100000000 | 100003637 | DDR3_1600_8x8 |
 
- αυτα που θελουμε ειναι σε αυτα τα σημεια 
-system.cpu.committedInsts                        5712                       # Number of instructions committed
-system.cpu.committedOps                         10314                       # Number of ops (including micro ops) committed
+<br />
+These are all found in each stats.txt file for each benchmark that was done above and they are found:
 
-For the second benchmark (second command mentioned above)
+      system.cpu.committedInsts                   NumberOFCommitted Instructions                       # Number of instructions committed
+      
+<br />
+      
+      system.cpu.committedOps                     NumberOFExecuted Instructions                         # Number of ops (including micro ops) committed
 
-For the third benchmark (third command mentioned above)
+<br />
 
-For the fourth benchmark (fourth command mentioned above)
+Where it NumberOFCommitted Instructions  is 100000000 instructions executed with a limit by the benchmark and NumberOFExecuted Instructions you can see its results in the table below.This difference between committed instructions and executed instructions is due to the dependency on for loops and branches for which it is possible to predict whether they are taken or notTaken by continuing to do the calculations and that is why there are more executed than committed instructions. This is especially apparent in the 4th benchmark where the executed program has many for loops for which it tries to "guess" what will happen in the next iteration of each loop to be executed.In this particular case there is a big failure to predict and that is why it calculates many more. <br />
 
-For the fifth benchmark (fifth command mentioned above)
+<br />
+
+## 1.2 The total number of block replacements for the L1 data cache
+
+The table with the block replacements for the L1 data cache:
+
+
+| BenchMark |  |  |
+| :---: | :---: | :---: |
+| Specbzip |  |  | 
+| Specmcf |  |   |
+| Spechmmer |  |  | 
+| Specsjeng |  |  |
+| Speclibm |  |  |
+
+
+
+
