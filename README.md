@@ -144,7 +144,7 @@ These are found here:
 
 Here we have the total missrates for the L1 Data cache, L1 Instruction cache and L2 cache.
 
-<img src="https://github.com/NikolaosGian/computer_architecture_2/blob/question_1_b_c/graph/graph.png"> <br />
+<img src="graph/graph.png"> <br />
 
 I notice that in the 2 latest benchmark speclibm, specsjeng there are big miss L2 cache for both instances and data, this is probably due to the existence of for loops and branches that create problems when there is no provision for them. In the spechmmer benchmark we see that we have almost no L1 missrate and a small percentage of L2 cache miss.For the specmcf benchmark there is a lot of L2 data missrate and finally in the specbzip benchmark we see that we have a large L2 instructions missrate.
 
