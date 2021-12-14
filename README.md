@@ -16,19 +16,19 @@
 <br />
 
 # 1. Simulation Parameters For The Subsystem Memory (Question 1)
-First you need to run the following benchmarks to provide the appropriate files to be able to extract the results for them:
+The following benchmarks were run in order to produce the information needed:
     
-      $ ./build/ARM/gem5.opt -d spec_results/specbzip configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/401.bzip2/src/specbzip -o "spec_cpu2006/401.bzip2/data/input.program 10" -I 100000000 
-      $ ./build/ARM/gem5.opt -d spec_results/specmcf configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/429.mcf/src/specmcf -o "spec_cpu2006/429.mcf/data/inp.in" -I 100000000 
-      $ ./build/ARM/gem5.opt -d spec_results/spechmmer configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/456.hmmer/src/spechmmer -o "--fixed 0 --mean 325 --num 45000 --sd 200 --seed 0 spec_cpu2006/456.hmmer/data/bombesin.hmm" -I 100000000 
-      $ ./build/ARM/gem5.opt -d spec_results/specsjeng configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/458.sjeng/src/specsjeng -o "spec_cpu2006/458.sjeng/data/test.txt" -I 100000000 
-      $ ./build/ARM/gem5.opt -d spec_results/speclibm configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/470.lbm/src/speclibm -o "20 spec_cpu2006/470.lbm/data/lbm.in 0 1 spec_cpu2006/470.lbm/data/100_100_130_cf_a.of" -I 100000000 
+    $ ./build/ARM/gem5.opt -d spec_results/specbzip configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/401.bzip2/src/specbzip -o "spec_cpu2006/401.bzip2/data/input.program 10" -I 100000000 
+    $ ./build/ARM/gem5.opt -d spec_results/specmcf configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/429.mcf/src/specmcf -o "spec_cpu2006/429.mcf/data/inp.in" -I 100000000 
+    $ ./build/ARM/gem5.opt -d spec_results/spechmmer configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/456.hmmer/src/spechmmer -o "--fixed 0 --mean 325 --num 45000 --sd 200 --seed 0 spec_cpu2006/456.hmmer/data/bombesin.hmm" -I 100000000 
+    $ ./build/ARM/gem5.opt -d spec_results/specsjeng configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/458.sjeng/src/specsjeng -o "spec_cpu2006/458.sjeng/data/test.txt" -I 100000000 
+    $ ./build/ARM/gem5.opt -d spec_results/speclibm configs/example/se.py --cpu-type=MinorCPU --caches --l2cache -c spec_cpu2006/470.lbm/src/speclibm -o "20 spec_cpu2006/470.lbm/data/lbm.in 0 1 spec_cpu2006/470.lbm/data/100_100_130_cf_a.of" -I 100000000 
      
 <br />
 <br />
 
 ## 1.1. The total number of committed instructions
-In the table below we will see how many orders were executed and how many were committed <br />
+The table below we shows the numbers of commited instructions along with the executed instructions.<br />
 
 | BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
 | :---: | :---: | :---: | :---: |
@@ -39,15 +39,19 @@ In the table below we will see how many orders were executed and how many were c
 | Speclibm | 100000000 | 100003637 | DDR3_1600_8x8 |
 
 <br />
-These are all found in each stats.txt file for each benchmark that was done above and they are found:
+The number of commited instructions are found in this entry in the [stats.txt](spec_results) file: 
 
-      system.cpu.committedInsts     NumberOFCommitted Instructions              # Number of instructions committed
+    system.cpu.committedInsts   NumberOFCommitted Instructions   # Number of instructions committed
       
 <br />
+
+The number of executed instructions is found int his entry in the [stats.txt](spec_results) file:
       
-      system.cpu.committedOps       NumberOFExecuted Instructions          # Number of ops (including micro ops) committed
+    system.cpu.committedOps   NumberOFExecuted Instructions   # Number of ops (including micro ops) committed
 
 <br />
+
+> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded. This becomes apparent in the 4th benchmark where the executed program has many for loops hence it has many branch instructions that the branch predictor tries to "guess" the outcome. 
 
 Where it NumberOFCommitted Instructions  is 100000000 instructions executed with a limit by the benchmark and NumberOFExecuted Instructions you can see its results in the table below.This difference between committed instructions and executed instructions is due to the dependency on for loops and branches for which it is possible to predict whether they are taken or notTaken by continuing to do the calculations and that is why there are more executed than committed instructions. This is especially apparent in the 4th benchmark where the executed program has many for loops for which it tries to "guess" what will happen in the next iteration of each loop to be executed.In this particular case there is a big failure to predict and that is why it calculates many more. <br />
 
@@ -58,17 +62,17 @@ Where it NumberOFCommitted Instructions  is 100000000 instructions executed with
 The table with the block replacements for the L1 data cache:
 
 
-| BenchMarks | Number of block replacement | 
-| :---: | :---: | 
-| Specbzip | 10605329 |
-| Specmcf | 14199184 | 
-| Spechmmer | 6262201 |
-| Specsjeng | 73813129 |
-| Speclibm | 10119911 |
+| BenchMarks | Block replacements dcache |
+| :---: | :---: |
+| Specbzip | 710569 |
+| Specmcf | 54452 |
+| Spechmmer | 65718 |
+| Specsjeng | 5262377 |
+| Speclibm | 1486955 |
 
-These are found here: 
+The L1 block replacements for the dcache can be found in the bellow line:  
 
-      system.cpu.dcache.WriteReq_hits::.cpu.data     NumberOfBlockReplacement              # number of WriteReq hits
+    system.cpu.dcache.replacements number_of_replacements # number of replacements
       
 
 <br />
@@ -82,21 +86,21 @@ The table with the number of accesses to the L2 cache
 
 | BenchMarks | Number of accesses | 
 | :---: | :---: | 
-| Specbzip | 511345 |
-| Specmcf | 684515 | 
-| Spechmmer | 65076 |
-| Specsjeng | 148 |
-| Speclibm | 83 |
+| Specbzip | 712341 |
+| Specmcf | 724390 | 
+| Spechmmer | 70563 |
+| Specsjeng | 5264051 |
+| Speclibm | 1488538 |
 
 
-These are found here: 
+The number of accesses are found here: 
  
-      system.l2.overall_hits::total                  NumberOfAccesses                       # number of overall hits
+    system.l2.overall_accesses::total  number_of_accesses   # number of overall (read+write) accesses
   
 
 <br />
 
-In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say that if we miss the L1 cache in total including data and instructions and how many total acesses we did from the DRAM memory then after subtracting them we will get how many acesses we did for the second hidden memory level L2 cache. (δεν ειμαι σιγουρος για αυτο)
+> In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say that if we miss the L1 cache in total including data and instructions and how many total acesses we did from the DRAM memory then after subtracting them we will get how many acesses we did for the second hidden memory level L2 cache. (δεν ειμαι σιγουρος για αυτο)
 
 <br />
 <br />
@@ -106,7 +110,7 @@ In case gem5 didn't give us this information about the number of accesses to the
 
 ## 2.1 Execution time
 
-The time that the time it takes the program to run on the emulated processor, not the time it takes the gem5 to perform the emulation
+The time that the it takes the program to run on the emulated processor, not the time it takes the gem5 to perform the emulation
 
 | BenchMarks | Execution time (s) | 
 | :---: | :---: | 
@@ -118,7 +122,7 @@ The time that the time it takes the program to run on the emulated processor, no
 
 These are found here: 
 
-       sim_seconds                                  timeSeconds                       # Number of seconds simulated
+    sim_seconds  timeSeconds   # Number of seconds simulated
 
 ## 2.2 CPI
 
@@ -134,7 +138,7 @@ Cycles Per Instruction for each benchmark
 
 These are found here: 
 
-       system.cpu.cpi                               cpiValue                      # CPI: cycles per instruction
+       system.cpu.cpi  cpiValue   # CPI: cycles per instruction
 
 ## 2.3 Total missrates for each benchmark
 
