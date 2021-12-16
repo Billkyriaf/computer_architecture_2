@@ -32,11 +32,11 @@ The table below we shows the numbers of commited instructions along with the exe
 
 | BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
 | :---: | :---: | :---: | :---: |
-| Specbzip | 100000001 | 190645 | DDR3_1600_8x8 |
-| Specmcf | 100000000 | 690949  | DDR3_1600_8x8 |
-| Spechmmer | 100000000 | 974536 | DDR3_1600_8x8 |
-| Specsjeng | 100000000 | 4279 | DDR3_1600_8x8 | 
-| Speclibm | 100000000 | 2680 | DDR3_1600_8x8 |
+| Specbzip | 100000001 | 100190646 | DDR3_1600_8x8 |
+| Specmcf | 100000000 | 100690949  | DDR3_1600_8x8 |
+| Spechmmer | 100000000 | 100974536 | DDR3_1600_8x8 |
+| Specsjeng | 100000000 | 100004279 | DDR3_1600_8x8 | 
+| Speclibm | 100000000 | 100002680 | DDR3_1600_8x8 |
 
 <br />
 
