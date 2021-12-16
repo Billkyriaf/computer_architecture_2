@@ -158,77 +158,17 @@ Now we will do the same procedure with the benchmakrs but add `--cpu-clock=1.5GH
  
  <br />
      
-| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old cpu_cluster.clk_domain.clock | New cpu_cluster.clk_domain.clock | 
+| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old system.cpu_clk_domain.clock | New system.cpu_clk_domain.clock | 
 | :---: | :---: | :---: |:---: |:---: |
-| Specsjeng | 1000  | 1000  | - | - |
-| Speclibm | 1000 | 1000  | - | - |
+| Specsjeng | 1000 | 1000  | 500 | 667 |
+| Speclibm | 1000 | 1000  | 500 | 667 |
 
-  The `MinorCPU` model does not use `cpu_cluster.clk_domain.clock` as shown here `children=clk_domain cpu cpu_clk_domain cpu_voltage_domain dvfs_handler l2 mem_ctrls membus redirect_paths0 redirect_paths1 redirect_paths2 redirect_paths3 tol2bus voltage_domain`. Found in `config.ini` so we cant tell which one is clocked at `1.5GHz` only from the `stats.txt` and `config.ini` files.Looking at the `config.json` file we understand that when the processor is started for the first time it starts with the default 1000 ticks/cycle <br />
-  
-        "work_begin_ckpt_count": 0, 
-        "clk_domain": {
-            "name": "clk_domain", 
-            "clock": [
-                1000
-            ], 
-            "init_perf_level": 0, 
-            "voltage_domain": "system.voltage_domain", 
-            "eventq_index": 0, 
-            "cxx_class": "SrcClockDomain", 
-            "path": "system.clk_domain", 
-            "type": "SrcClockDomain", 
-            "domain_id": -1
-        }, 
-        
- <br />
- 
-  and then changes to 667 ticks/cycle.<br />
-  
-            "dvfs_handler": {
-            "enable": false, 
-            "name": "dvfs_handler", 
-            "sys_clk_domain": "system.clk_domain", 
-            "transition_latency": 100000000, 
-            "eventq_index": 0, 
-            "cxx_class": "DVFSHandler", 
-            "domains": [], 
-            "path": "system.dvfs_handler", 
-            "type": "DVFSHandler"
-        }, 
-        "work_end_exit_count": 0, 
-        "type": "System", 
-        "voltage_domain": {
-            "name": "voltage_domain", 
-            "eventq_index": 0, 
-            "voltage": [
-                1.0
-            ], 
-            "cxx_class": "VoltageDomain", 
-            "path": "system.voltage_domain", 
-            "type": "VoltageDomain"
-        }, 
-        "cache_line_size": 64, 
-        "boot_osflags": "a", 
-        "work_cpus_ckpt_count": 0, 
-        "thermal_components": [], 
-        "path": "system", 
-        "cpu_clk_domain": {
-            "name": "cpu_clk_domain", 
-            "clock": [
-                667
-            ], 
-            "init_perf_level": 0, 
-            "voltage_domain": "system.cpu_voltage_domain", 
-            "eventq_index": 0, 
-            "cxx_class": "SrcClockDomain", 
-            "path": "system.cpu_clk_domain", 
-            "type": "SrcClockDomain", 
-            "domain_id": -1
-        },
-        
-        
-  <br />
-This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same or increase.The possible bandwidth of the frequency will be from 1.5 GHZ to 3 GHz. <br />
+The "MinorCPU" model with the original frequency had system.clk_domain.clock at 1000 ticks/cycle and system.cpu_clk_domain.clock at 500 ticks/cycle after the change in both cases became as follows system.clk_domain. clock remained the same as the original (at 1000 ticks/cycle) but the change was seen in system.cpu_clk_domain.clock which became 667 ticks/cycle.By searching the config.json file we can see which systems are clocked at 1.5GHz which are as follows tol2bus, cpu(tags,itb,walker),dtb,dcache, l2.
+
+<br />
+<br />      
+
+This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same. <br />
 
 <br />
 <br />
@@ -239,4 +179,4 @@ This is so that the processor can work at maximum speed with the other subsystem
 | Speclibm | 0.205034 |
 
 <br />
-There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change = 1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
+There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change  1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
