@@ -40,6 +40,14 @@
     - [3.2.5. L1 icache associativity](#325-l1-icache-associativity)
     - [3.2.6. L2 associativity](#326-l2-associativity)
     - [3.2.7. Final design](#327-final-design)
+  - [3.3. Specsjeng](#33-specsjeng)
+    - [3.3.1. L1 data cache size](#331-l1-data-cache-size)
+    - [3.3.2. L2 size](#332-l2-size)
+    - [3.3.3. Cache line size (Block size)](#333-cache-line-size-block-size)
+    - [3.3.4. L1 instruction cache size](#334-l1-instruction-cache-size)
+    - [3.3.5. L1 icache associativity](#335-l1-icache-associativity)
+    - [3.3.6. L2 associativity](#336-l2-associativity)
+    - [3.3.7. Final design](#337-final-design)
 
 # 1. Simulation Parameters For The Subsystem Memory (Question 1)
 The following benchmarks were run in order to produce the information needed:
@@ -189,7 +197,7 @@ The information regarding the cache configuration for each benchmark can be foun
 ## 3.1. Specbzip
 
 
-To find the best memory optimizations the above parameters were tested one at a time 
+To find the best memory optimizations the above parameters were tested one at a time.
 
 
 From the [`stats.txt`](spec_results/specbzip/stats.txt) file we can extract some useful information about the initial performance. 
@@ -212,7 +220,7 @@ The overall misses for the `L1 icache` are 751. Based on that the first test wil
 |     256 kB      | 1.547263 |         0.008178         |         0.000077         |       0.540433       |
 
 
-Increasing the size of the `L1 dcache` has no effect on `icache overall Miss Rate` as expected. The `CPI` reduces as the size of the cache increases as the `dcache overall Miss Rate` does too. The only disadvantage is that the `L2 overall Miss Rate` increases. This is the case because although the overall misses for L2 cache remained the same the total accesses were drastically reduced because L1 was bigger.
+Increasing the size of the `L1 dcache` has no effect on `L1 icache miss rate` as expected. The `CPI` reduces as the size of the cache increases as the `L1 dcache miss rate` does too. The only disadvantage is that the `L2 miss rate` increases. This is the case because although the overall misses for L2 cache remained the same the total accesses were drastically reduced because L1 was bigger.
 
 
 ### 3.1.2. L2 size
@@ -226,7 +234,7 @@ With everything keeping the same value and the L1 size being 256kB (the best res
 |     2 MB      | 1.547263 |         0.008178         |         0.000077         |       0.540433       |
 |     4 MB      | 1.532711 |         0.008175         |         0.000077         |       0.483740       |
 
-Increasing the size of the L2 cache improves the CPI further. Again as expected the `L2 overall Miss Rate` reduced because L2 can now hold more data than before.
+Increasing the size of the L2 cache improves the CPI further. Again as expected the `L2 miss rate` reduced because L2 can now hold more data than before.
 
 
 ### 3.1.3. Cache line size (Block size)
@@ -270,7 +278,7 @@ As it was mentioned before this program has very few icache misses so increasing
 |           full           | 1.509679 |         0.005320         |         0.000039         |       0.292270       |
 
 
-Full set associative gives the best CPI for this simulation. Fully associative cache i generally great for performance but is very complex from the hardware perspective. Since this is L1 cache and is only 256kB in size this is a relatively realistic scenario.
+Full set associative gives the best `CPI` for this simulation. Fully associative cache is generally great for performance but is very complex from the hardware perspective. Since this is `L1 cache` and is only `256kB` in size this is a relatively realistic scenario.
 
 ### 3.1.6. L2 associativity
 
@@ -282,17 +290,21 @@ Full set associative gives the best CPI for this simulation. Fully associative c
 |      32 way      | 1.507638 |         0.005298         |         0.000039         |       0.287651       |
 
 
-L2 also benefits from associativity but as it is 16 time larger that L1 we can not realistically go to a fully associative design. The 32 way associativity seems like a good balance.
+`L2` also benefits from associativity but as it is 16 time larger that L1 we can not realistically go to a fully associative design. The `32 way set associative` design seems like a good balance.
 
 ### 3.1.7. Final design
 
-| Design aspect | L1 dcache  size | L1 dcache  associativity | L1 icache  size | L1 icache  associativity | L2 cache size | L2 associativity | Cacheline size |
-| :-----------: | :-------------: | :----------------------: | :-------------: | :----------------------: | :-----------: | :--------------: | :------------: |
-|               |     256 kB      |    fully associative     |     256 kB      |          2 way           |     4 MB      |      32 way      |   256 bytes    |
+| Design aspect | L1 dcache  size | L1 dcache  associativity | L1 icache  size | L1 icache  associativity | L2 cache size | L2 associativity | Cacheline size | Best CPI |
+| :-----------: | :-------------: | :----------------------: | :-------------: | :----------------------: | :-----------: | :--------------: | :------------: | :------: |
+|               |     256 kB      |    fully associative     |     256 kB      |          2 way           |     4 MB      |      32 way      |   256 bytes    | 1.507638 |
 
 ## 3.2. Specmcf
 
-The procedure is the same with the first simulation.
+From the [`stats.txt`](spec_results/specmcf/stats.txt) file we can extract some useful information about the initial performance. 
+
+|         |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :-----: | :------: | :----------------------: | :----------------------: | :------------------: |
+| Initial | 1.298734 |         0.002079         |         0.023610         |       0.055082       |
 
 ### 3.2.1. L1 data cache size
 
@@ -305,7 +317,7 @@ The procedure is the same with the first simulation.
 |     256 kB      | 1.277542 |         0.001844         |         0.023625         |       0.055540       |
 
 
-Increasing the size of the `L1 dcache` has no effect on `icache overall Miss Rate` as expected. The `CPI` reduces as the size of the cache increases as the `dcache overall Miss Rate` does too. The only disadvantage is that the `L2 overall Miss Rate` increases. This is the case because although the overall misses for L2 cache remained the same the total accesses were drastically reduced because L1 was bigger.
+Increasing the size of the `L1 dcache` has no effect on `L1 icache miss rate` as expected. The `CPI` reduces as the size of the cache increases as the `dcache miss rate` does too. The only disadvantage is that the `L2 miss rate` increases. This is the case because although the overall misses for `L2 cache` remained the same the total accesses were drastically reduced because `L1` was bigger.
 
 
 ### 3.2.2. L2 size
@@ -319,7 +331,7 @@ With everything keeping the same value and the L1 size being 256kB (the best res
 |     2 MB      | 1.277542 |         0.001844         |         0.023625         |       0.055540       |
 |     4 MB      | 1.277379 |         0.001844         |         0.023625         |       0.055127       |
 
-Increasing the size of the L2 cache improves the CPI but not too much. Again as expected the `L2 overall Miss Rate` reduced because L2 can now hold more data than before. The affects of the size increase for the L2 cache are modest. This is because the limiting factor for this benchmark is the `L1 icache` where most of the misses happen.
+Increasing the size of the `L2 cache` improves the `CPI` but not too much. Again as expected the `L2 miss rate` was reduced because `L2` can now hold more data than before. The affects of the size increase for the `L2 cache` are modest. This is because the limiting factor for this benchmark is the `L1 icache` where most of the misses happen.
 
 
 ### 3.2.3. Cache line size (Block size)
@@ -341,8 +353,6 @@ Increasing the `cacheline` size brought an improvement on some of the aspects th
 
 ### 3.2.4. L1 instruction cache size
 
-At this point the pattern is clean. Everything tested before this point is kept at the optimal value and the only the tested variable changes. 
-
 | L1 icache  size |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
 | :-------------: | :------: | :----------------------: | :----------------------: | :------------------: |
 |      16 kB      | 1.476380 |         0.000672         |         0.063960         |       0.006017       |
@@ -362,7 +372,7 @@ This test clearly shows the previous bottleneck on the `L1 icache`. This is a be
 |          8 way           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
 |           full           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
 
-Changing `L1 icache associativity` has no effect on the program. This is the case because above the 64kB of `icache` the instruction misses are so few that there is a very small number of block replacements in the `L1 icache`. Obviously in a situation like that we would choose the 2 way associative since it is the most easy to manufacture among the rest of the options.
+Changing `L1 icache associativity` has no effect on the program. This is the case because above the `64kB` of `icache` the instruction misses are so few that there is a very small number of block replacements in the `L1 icache`. Obviously in a situation like that we would choose the 2 way associative since it is the most easy to manufacture among the rest of the options.
 
 ### 3.2.6. L2 associativity
 
@@ -378,6 +388,101 @@ The same as the `L1 icache associativity` stands here too. There are very few mi
 
 ### 3.2.7. Final design
 
-| Design aspect | L1 dcache  size | L1 dcache  associativity | L1 icache  size | L1 icache  associativity | L2 cache size | L2 associativity | Cacheline size |
-| :-----------: | :-------------: | :----------------------: | :-------------: | :----------------------: | :-----------: | :--------------: | :------------: |
-|               |     256 kB      |          2 way           |      64 kB      |          2 way           |     4 MB      |      4 way       |   256 bytes    |
+| Design aspect | L1 dcache  size | L1 dcache  associativity | L1 icache  size | L1 icache  associativity | L2 cache size | L2 associativity | Cacheline size | Best CPI |
+| :-----------: | :-------------: | :----------------------: | :-------------: | :----------------------: | :-----------: | :--------------: | :------------: | :------: |
+|               |     256 kB      |          2 way           |      64 kB      |          2 way           |     4 MB      |      4 way       |   256 bytes    | 1.098808 |
+
+
+## 3.3. Specsjeng
+
+From the [`stats.txt`](spec_results/specsjeng/stats.txt) file we can extract some useful information about the initial performance. 
+
+|         |    CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :-----: | :-------: | :----------------------: | :----------------------: | :------------------: |
+| Initial | 10.276245 |         0.121831         |         0.000020         |       0.999972       |
+
+### 3.3.1. L1 data cache size
+
+| L1 dcache  size |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :-------------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|      16 kB      | 1.326323 |         0.008184         |         0.023542         |       0.042767       |
+|      32 kB      | 1.281189 |         0.002478         |         0.023624         |       0.054347       |
+|      64 kB      | 1.278885 |         0.002079         |         0.023625         |       0.055082       |
+|     128 kB      | 1.277895 |         0.001925         |         0.023625         |       0.055381       |
+|     256 kB      | 1.277542 |         0.001844         |         0.023625         |       0.055540       |
+
+
+Increasing the size of the `L1 dcache` has no effect on `L1 icache miss rate` as expected. The `CPI` reduces as the size of the cache increases as the `dcache miss rate` does too. The only disadvantage is that the `L2 miss rate` increases. This is the case because although the overall misses for `L2 cache` remained the same the total accesses were drastically reduced because `L1` was bigger.
+
+
+### 3.3.2. L2 size
+
+With everything keeping the same value and the L1 size being 256kB (the best result of the previous experiment) we start incrementing the size of the L2 cache.
+
+
+| L2 cache size |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :-----------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|     1 MB      | 1.280194 |         0.001844         |         0.023625         |       0.059948       |
+|     2 MB      | 1.277542 |         0.001844         |         0.023625         |       0.055540       |
+|     4 MB      | 1.277379 |         0.001844         |         0.023625         |       0.055127       |
+
+Increasing the size of the `L2 cache` improves the `CPI` but not too much. Again as expected the `L2 miss rate` was reduced because `L2` can now hold more data than before. The affects of the size increase for the `L2 cache` are modest. This is because the limiting factor for this benchmark is the `L1 icache` where most of the misses happen.
+
+
+### 3.3.3. Cache line size (Block size)
+
+From the previous tests it was determined that the best size for `L1` is `256kB` and for `L2` is `4 MB`. With that as a starting point the next thing to test is the effect the cache line size has to the simulated program.
+
+| Cacheline size |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :------------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|    16 bytes    | 1.390975 |         0.004429         |         0.014546         |       0.210064       |
+|    32 bytes    | 1.224059 |         0.002946         |         0.013170         |       0.160583       |
+|    64 bytes    | 1.277308 |         0.001844         |         0.023625         |       0.055128       |
+|   128 bytes    | 1.318068 |         0.001074         |         0.034839         |       0.020608       |
+|   256 bytes    | 1.291262 |         0.000672         |         0.032593         |       0.011582       |
+|   512 bytes    | 1.368126 |         0.000493         |         0.039855         |       0.004910       |
+|   1024 bytes   | 1.493633 |         0.000469         |         0.038898         |       0.002582       |
+
+
+Increasing the `cacheline` size brought an improvement on some of the aspects that are monitored here. The `L1 dcache miss rate` and `L2 miss rate`  seem to be positively affected by the increase. On the other hand `L1 icache` and the overall `CPI` are negatively affected. A good middle ground is `256 kB` because `CPI` and `L1 dcache miss rate` drop a little and the other two values are greatly favored.
+
+### 3.3.4. L1 instruction cache size
+
+| L1 icache  size |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :-------------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|      16 kB      | 1.476380 |         0.000672         |         0.063960         |       0.006017       |
+|      32 kB      | 1.291262 |         0.000672         |         0.032593         |       0.011582       |
+|      64 kB      | 1.099167 |         0.000672         |         0.000027         |       0.513670       |
+|     128 kB      | 1.099075 |         0.000672         |         0.000009         |       0.526280       |
+|     256 kB      | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
+
+This test clearly shows the previous bottleneck on the `L1 icache`. This is a benchmark that runs multiple instructions on a relatively small amount of data. Increasing the size of `L1 icache` the `CPI` approached 1. The disadvantage here is the sudden increase in `L2 miss rate`. From 32kB to 64kB the `L1 icache misses` went from 847293 to just 709, meaning in that point most of the used instructions started to fit in the `L1 icache`. The sudden increase of the `L2 miss rate` is there because the total number of misses drastically lessened from 856085 initially to just 9499. 
+
+### 3.3.5. L1 icache associativity
+
+| L1 icache  associativity |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :----------------------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|          2 way           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
+|          4 way           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
+|          8 way           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
+|           full           | 1.099075 |         0.000672         |         0.000009         |       0.526335       |
+
+Changing `L1 icache associativity` has no effect on the program. This is the case because above the `64kB` of `icache` the instruction misses are so few that there is a very small number of block replacements in the `L1 icache`. Obviously in a situation like that we would choose the 2 way associative since it is the most easy to manufacture among the rest of the options.
+
+### 3.3.6. L2 associativity
+
+| L1 associativity |   CPI    | dcache overall Miss Rate | icache overall Miss Rate | L2 overall Miss Rate |
+| :--------------: | :------: | :----------------------: | :----------------------: | :------------------: |
+|      4 way       | 1.098808 |         0.000621         |         0.000009         |       0.569636       |
+|      8 way       | 1.098808 |         0.000621         |         0.000009         |       0.569636       |
+|      16 way      | 1.098808 |         0.000621         |         0.000009         |       0.569636       |
+|      32 way      | 1.098808 |         0.000621         |         0.000009         |       0.569636       |
+
+
+The same as the `L1 icache associativity` stands here too. There are very few misses for the `L2 cache` to benefit from a 16 or 32 set associative design. So the choice here is the "less" associative cache. 
+
+### 3.3.7. Final design
+
+| Design aspect | L1 dcache  size | L1 dcache  associativity | L1 icache  size | L1 icache  associativity | L2 cache size | L2 associativity | Cacheline size | Best CPI |
+| :-----------: | :-------------: | :----------------------: | :-------------: | :----------------------: | :-----------: | :--------------: | :------------: | :------: |
+|               |     256 kB      |          2 way           |      64 kB      |          2 way           |     4 MB      |      4 way       |   256 bytes    | 1.098808 |

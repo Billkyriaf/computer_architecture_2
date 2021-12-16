@@ -6,7 +6,7 @@ user=$(whoami)
 gem5=/home/$user/Gem5/my_gem5  # Gem5 path
 
 benchmark=specbzip
-benchmark_files='-c spec_cpu2006/401.bzip2/src/specbzip -o "spec_cpu2006/401.bzip2/data/input.program 10" -I 100000000'
+benchmark_files='-c spec_cpu2006/401.bzip2/src/specbzip -o spec_cpu2006/401.bzip2/data/input.program 10 -I 100000000'
 
 current_dir=$(pwd)/test_results
 declare -i index=0
