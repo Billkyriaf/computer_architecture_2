@@ -32,30 +32,29 @@ The table below we shows the numbers of commited instructions along with the exe
 
 | BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
 | :---: | :---: | :---: | :---: |
-| Specbzip | 100000001 | 100196363 | DDR3_1600_8x8 |
-| Specmcf | 100000000 | 101102729  | DDR3_1600_8x8 |
-| Spechmmer | 100000000 | 101102729 | DDR3_1600_8x8 |
-| Specsjeng | 100000000 | 184174857 | DDR3_1600_8x8 | 
-| Speclibm | 100000000 | 100003637 | DDR3_1600_8x8 |
+| Specbzip | 100000001 | 190645 | DDR3_1600_8x8 |
+| Specmcf | 100000000 | 690949  | DDR3_1600_8x8 |
+| Spechmmer | 100000000 | 974536 | DDR3_1600_8x8 |
+| Specsjeng | 100000000 | 4279 | DDR3_1600_8x8 | 
+| Speclibm | 100000000 | 2680 | DDR3_1600_8x8 |
 
 <br />
 
 The number of commited instructions are found in this entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file: 
 
-    system.cpu.committedInsts   NumberOFCommitted Instructions   # Number of instructions committed
+    system.cpu.committedInsts   NumberOFCommittedInstructions   # Number of instructions committed
       
 <br />
 
 The number of executed instructions is found int his entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file:
       
-    system.cpu.committedOps   NumberOFExecuted Instructions   # Number of ops (including micro ops) committed
+    system.cpu.discardedOps   NumberOFExecutedInstructions   # Number of ops (including micro ops) which were discarded before commit
+
     
 
 <br />
 
-> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded. This becomes apparent in the 4th benchmark where the executed program has many for loops hence it has many branch instructions that the branch predictor tries to "guess" the outcome. 
-
-Where it NumberOFCommitted Instructions  is 100000000 instructions executed with a limit by the benchmark and NumberOFExecuted Instructions you can see its results in the table below.This difference between committed instructions and executed instructions is due to the dependency on for loops and branches for which it is possible to predict whether they are taken or notTaken by continuing to do the calculations and that is why there are more executed than committed instructions. This is especially apparent in the 4th benchmark where the executed program has many for loops for which it tries to "guess" what will happen in the next iteration of each loop to be executed.In this particular case there is a big failure to predict and that is why it calculates many more. <br />
+> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded.
 
 <br />
 
