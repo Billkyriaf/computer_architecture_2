@@ -39,15 +39,17 @@ The table below we shows the numbers of commited instructions along with the exe
 | Speclibm | 100000000 | 100003637 | DDR3_1600_8x8 |
 
 <br />
-The number of commited instructions are found in this entry in the [stats.txt](spec_results) file: 
+
+The number of commited instructions are found in this entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file: 
 
     system.cpu.committedInsts   NumberOFCommitted Instructions   # Number of instructions committed
       
 <br />
 
-The number of executed instructions is found int his entry in the [stats.txt](spec_results) file:
+The number of executed instructions is found int his entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file:
       
     system.cpu.committedOps   NumberOFExecuted Instructions   # Number of ops (including micro ops) committed
+    
 
 <br />
 
@@ -100,7 +102,13 @@ The number of accesses are found here:
 
 <br />
 
-> In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say that if we miss the L1 cache in total including data and instructions and how many total acesses we did from the DRAM memory then after subtracting them we will get how many acesses we did for the second hidden memory level L2 cache. (δεν ειμαι σιγουρος για αυτο)
+In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say:<br />
+
+    system.l2.overall_accesses::.cpu.inst             numberA                       # number of overall (read+write) accesses
+    system.l2.overall_accesses::.cpu.data             numberB                       # number of overall (read+write) accesses
+<br />    
+If we add the numbers numberA + numberB we will get the total number of accesses to the L2 cache (read+write). 
+
 
 <br />
 <br />
