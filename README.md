@@ -164,14 +164,9 @@ Now we will do the same procedure with the benchmakrs but add `--cpu-clock=1.5GH
 | Speclibm | 1000 | 1000  | 500 | 667 |
 
 The "MinorCPU" model with the original frequency had system.clk_domain.clock at 1000 ticks/cycle and system.cpu_clk_domain.clock at 500 ticks/cycle after the change in both cases became as follows system.clk_domain. clock remained the same as the original (at 1000 ticks/cycle) but the change was seen in system.cpu_clk_domain.clock which became 667 ticks/cycle.By searching the config.json file we can see which systems are clocked at 1.5GHz which are as follows tol2bus, cpu(tags,itb,walker),dtb,dcache, l2.
-
-<br />
-<br />      
+<br />    
 
 This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same. <br />
-
-<br />
-<br />
 
 | BenchMarks | New Execution time (s) | 
 | :---: | :---: | 
