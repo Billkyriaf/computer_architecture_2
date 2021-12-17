@@ -80,13 +80,13 @@ The following benchmarks were run in order to produce the information needed:
 The table below we shows the numbers of committed instructions along with the executed instructions.<br />
 
 
-| BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
-| :---: | :---: | :---: | :---: |
-| Specbzip | 100000001 | 100190646 | DDR3_1600_8x8 |
-| Specmcf | 100000000 | 100690949  | DDR3_1600_8x8 |
-| Spechmmer | 100000000 | 100974536 | DDR3_1600_8x8 |
-| Specsjeng | 100000000 | 100004279 | DDR3_1600_8x8 | 
-| Speclibm | 100000000 | 100002680 | DDR3_1600_8x8 |
+| BenchMarks | Committed Instructions | Executed Instructions | Memory Types  |
+| :--------: | :--------------------: | :-------------------: | :-----------: |
+|  Specbzip  |       100000001        |       100190646       | DDR3_1600_8x8 |
+|  Specmcf   |       100000000        |       100690949       | DDR3_1600_8x8 |
+| Spechmmer  |       100000000        |       100974536       | DDR3_1600_8x8 |
+| Specsjeng  |       100000000        |       100004279       | DDR3_1600_8x8 |
+|  Speclibm  |       100000000        |       100002680       | DDR3_1600_8x8 |
 
 <br />
 
@@ -213,20 +213,20 @@ Now we will do the same procedure with the benchmakrs but add `--cpu-clock=1.5GH
  
  <br />
      
-| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old system.cpu_clk_domain.clock | New system.cpu_clk_domain.clock | 
-| :---: | :---: | :---: |:---: |:---: |
-| Specsjeng | 1000 | 1000  | 500 | 667 |
-| Speclibm | 1000 | 1000  | 500 | 667 |
+| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old system.cpu_clk_domain.clock | New system.cpu_clk_domain.clock |
+| :--------: | :-------------------------: | :-------------------------: | :-----------------------------: | :-----------------------------: |
+| Specsjeng  |            1000             |            1000             |               500               |               667               |
+|  Speclibm  |            1000             |            1000             |               500               |               667               |
 
 The "MinorCPU" model with the original frequency had system.clk_domain.clock at 1000 ticks/cycle and system.cpu_clk_domain.clock at 500 ticks/cycle after the change in both cases became as follows system.clk_domain. clock remained the same as the original (at 1000 ticks/cycle) but the change was seen in system.cpu_clk_domain.clock which became 667 ticks/cycle.By searching the config.json file we can see which systems are clocked at 1.5GHz which are as follows tol2bus, cpu(tags,itb,walker),dtb,dcache, l2.
 <br />    
 
 This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same. <br />
 
-| BenchMarks | New Execution time (s) | 
-| :---: | :---: | 
-| Specsjeng | 0.581937  |
-| Speclibm | 0.205034 |
+| BenchMarks | New Execution time (s) |
+| :--------: | :--------------------: |
+| Specsjeng  |        0.581937        |
+|  Speclibm  |        0.205034        |
 
 <br />
 There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change  1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
