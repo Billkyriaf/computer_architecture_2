@@ -60,7 +60,7 @@
       - [2.1.4.6. L2 associativity](#2146-l2-associativity)
       - [2.1.4.7. Final design](#2147-final-design)
   - [2.2. Diagrams](#22-diagrams)
-- [3. Step 3](#3-step-3)
+ - [3. Step 3](#3-step-3)
 
 # 1. Step 1
 ## 1.1. Simulation Parameters For The Subsystem Memory
@@ -679,7 +679,6 @@ costFunction = (l1d_size) ^ 2 / 64(kΒ ^ 2) + (l1i_size) ^ 2 / 64(kΒ ^ 2) + (l2
 When we have in associativity with full associativity automaton we will ignore the fraction and get as 15000
 <br />
 
-## 3.1 Best cost_function calculation for each Benchmark
  * Specbzip final_cost = 9561
  * Specmcf final_cost = 1096
  * Specjeng final_cost = 2069
