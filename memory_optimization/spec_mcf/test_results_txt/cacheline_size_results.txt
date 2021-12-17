@@ -1,8 +1,0 @@
-Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
-../test_results/specmcf_cacheline_size_0	1.390975	0.004429	0.014546	0.210064
-../test_results/specmcf_cacheline_size_1	1.224059	0.002946	0.013170	0.160583
-../test_results/specmcf_cacheline_size_2	1.277308	0.001844	0.023625	0.055128
-../test_results/specmcf_cacheline_size_3	1.318068	0.001074	0.034839	0.020608
-../test_results/specmcf_cacheline_size_4	1.291262	0.000672	0.032593	0.011582
-../test_results/specmcf_cacheline_size_5	1.368126	0.000493	0.039855	0.004910
-../test_results/specmcf_cacheline_size_6	1.493633	0.000469	0.038898	0.002582

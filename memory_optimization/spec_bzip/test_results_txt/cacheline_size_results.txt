@@ -1,8 +1,0 @@
-Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
-specbzip_cacheline_size_0	1.778735	0.018826	0.000096	0.710575
-specbzip_cacheline_size_1	1.634486	0.012306	0.000087	0.612453
-specbzip_cacheline_size_2	1.532711	0.008175	0.000077	0.483740
-specbzip_cacheline_size_3	1.526626	0.006756	0.000067	0.347057
-specbzip_cacheline_size_4	1.517955	0.006603	0.000064	0.231678
-specbzip_cacheline_size_5	1.529753	0.007321	0.000057	0.154287
-specbzip_cacheline_size_6	1.576398	0.008637	0.000122	0.108546

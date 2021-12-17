@@ -22,10 +22,11 @@ if [[ "$#" -ne 1 ]]; then
     exit -1
 fi
 
+path=$(pwd)
+
 cd $1
 # for every config.ini in the specified directory run the read_results script
 for i in $(ls *.ini)
-do
-    echo $1/$i
-    ./read_results $1/$i
+do  
+    $path/read_results.sh $i
 done

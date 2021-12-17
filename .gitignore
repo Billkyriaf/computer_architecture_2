@@ -1,2 +1,15 @@
 **/spec_cpu2006
 **/.vscode
+**/graph/graphs.xls
+
+**/spec_bzip/test_results/**/fs/
+**/spec_bzip/test_results/**/*.dot
+
+**/spec_libm/test_results/**/fs/
+**/spec_libm/test_results/**/*.dot
+
+**/spec_mcf/test_results/**/fs/
+**/spec_mcf/test_results/**/*.dot
+
+**/spec_sjeng/test_results/**/fs/
+**/spec_sjeng/test_results/**/*.dot

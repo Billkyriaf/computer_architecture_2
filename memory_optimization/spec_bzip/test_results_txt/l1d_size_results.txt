@@ -1,6 +1,0 @@
-Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
-specbzip_0	1.672106	0.021704	0.000078	0.187641
-specbzip_1	1.638240	0.017837	0.000077	0.230498
-specbzip_2	1.603996	0.014139	0.000077	0.295238
-specbzip_3	1.576537	0.011140	0.000077	0.382576
-specbzip_4	1.547263	0.008178	0.000077	0.540433

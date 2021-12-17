@@ -1,5 +1,0 @@
-Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
-specmcf_l2_assoc_0	1.099075	0.000672	0.000009	0.526335
-specmcf_l2_assoc_1	1.099075	0.000672	0.000009	0.526335
-specmcf_l2_assoc_2	1.099075	0.000672	0.000009	0.526335
-specmcf_l2_assoc_3	1.099075	0.000672	0.000009	0.526335

@@ -1,4 +1,0 @@
-Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
-specmcf_l2_size_0	1.280194	0.001844	0.023625	0.059948
-specmcf_l2_size_1	1.277542	0.001844	0.023625	0.055540
-specmcf_l2_size_2	1.277379	0.001844	0.023625	0.055127
