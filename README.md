@@ -62,7 +62,6 @@
   - [2.2. Diagrams](#22-diagrams)
 - [3. Step 3](#3-step-3)
 
-
 # 1. Step 1
 ## 1.1. Simulation Parameters For The Subsystem Memory
 The following benchmarks were run in order to produce the information needed:
