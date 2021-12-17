@@ -671,3 +671,16 @@ The same as the `L1 icache associativity` stands here too. Also here there are v
 <img src="graph/cacheline.png"> <br />
 
 # 3. Step 3
+
+Considering the exponentially increasing cost of memory as its size increases, as well as the increasing cost of memory of the same capacity as we get closer to the processor, we came up with a cost function which consists of coefficients larger for l1 than for l2 and at the same time the variable representing the capacity of memory at the l1 level is squared to show the difference in the construction price. Furthermore, the associativity coefficient is larger or equal in l1 than in l2 and additive since increasing complexity adds to the cost function. As for the cachelize size, we simply chose a coefficient based on the best value we had in the above simulations (128 Byte) in order to convert it to a graded size as well and eliminate the units.
+
+costFunction = (l1d_size) ^ 2 / 64(kΒ ^ 2) + (l1i_size) ^ 2 / 64(kΒ ^ 2) + (l2_size) / 2048kΒ + (l1d_assoc) / 2 + (l1i_assoc) / 2 + (l2_assoc) / 4 + cacheline_size / 128B 
+
+When we have in associativity with full associativity automaton we will ignore the fraction and get as 15000
+<br />
+
+## 3.1 Best cost_function calculation for each Benchmark
+ * Specbzip final_cost = 9561
+ * Specmcf final_cost = 1096
+ * Specjeng final_cost = 2069
+ * Speclibm final_cost = 2055
