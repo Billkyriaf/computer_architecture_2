@@ -32,28 +32,29 @@ The table below we shows the numbers of commited instructions along with the exe
 
 | BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
 | :---: | :---: | :---: | :---: |
-| Specbzip | 100000001 | 100196363 | DDR3_1600_8x8 |
-| Specmcf | 100000000 | 101102729  | DDR3_1600_8x8 |
-| Spechmmer | 100000000 | 101102729 | DDR3_1600_8x8 |
-| Specsjeng | 100000000 | 184174857 | DDR3_1600_8x8 | 
-| Speclibm | 100000000 | 100003637 | DDR3_1600_8x8 |
+| Specbzip | 100000001 | 100190646 | DDR3_1600_8x8 |
+| Specmcf | 100000000 | 100690949  | DDR3_1600_8x8 |
+| Spechmmer | 100000000 | 100974536 | DDR3_1600_8x8 |
+| Specsjeng | 100000000 | 100004279 | DDR3_1600_8x8 | 
+| Speclibm | 100000000 | 100002680 | DDR3_1600_8x8 |
 
 <br />
-The number of commited instructions are found in this entry in the [stats.txt](spec_results) file: 
 
-    system.cpu.committedInsts   NumberOFCommitted Instructions   # Number of instructions committed
+The number of commited instructions are found in this entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file: 
+
+    system.cpu.committedInsts   NumberOFCommittedInstructions   # Number of instructions committed
       
 <br />
 
-The number of executed instructions is found int his entry in the [stats.txt](spec_results) file:
+The number of executed instructions is found int his entry in the [stats.txt](https://github.com/Billkyriaf/computer_architecture_2/tree/main/spec_results) file:
       
-    system.cpu.committedOps   NumberOFExecuted Instructions   # Number of ops (including micro ops) committed
+    system.cpu.discardedOps   NumberOFExecutedInstructions   # Number of ops (including micro ops) which were discarded before commit
+
+    
 
 <br />
 
-> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded. This becomes apparent in the 4th benchmark where the executed program has many for loops hence it has many branch instructions that the branch predictor tries to "guess" the outcome. 
-
-Where it NumberOFCommitted Instructions  is 100000000 instructions executed with a limit by the benchmark and NumberOFExecuted Instructions you can see its results in the table below.This difference between committed instructions and executed instructions is due to the dependency on for loops and branches for which it is possible to predict whether they are taken or notTaken by continuing to do the calculations and that is why there are more executed than committed instructions. This is especially apparent in the 4th benchmark where the executed program has many for loops for which it tries to "guess" what will happen in the next iteration of each loop to be executed.In this particular case there is a big failure to predict and that is why it calculates many more. <br />
+> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded.
 
 <br />
 
@@ -100,7 +101,13 @@ The number of accesses are found here:
 
 <br />
 
-> In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say that if we miss the L1 cache in total including data and instructions and how many total acesses we did from the DRAM memory then after subtracting them we will get how many acesses we did for the second hidden memory level L2 cache. (δεν ειμαι σιγουρος για αυτο)
+In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say:<br />
+
+    system.l2.overall_accesses::.cpu.inst             numberA                       # number of overall (read+write) accesses
+    system.l2.overall_accesses::.cpu.data             numberB                       # number of overall (read+write) accesses
+<br />    
+If we add the numbers numberA + numberB we will get the total number of accesses to the L2 cache (read+write). 
+
 
 <br />
 <br />
@@ -158,80 +165,15 @@ Now we will do the same procedure with the benchmakrs but add `--cpu-clock=1.5GH
  
  <br />
      
-| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old cpu_cluster.clk_domain.clock | New cpu_cluster.clk_domain.clock | 
+| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old system.cpu_clk_domain.clock | New system.cpu_clk_domain.clock | 
 | :---: | :---: | :---: |:---: |:---: |
-| Specsjeng | 1000  | 1000  | - | - |
-| Speclibm | 1000 | 1000  | - | - |
+| Specsjeng | 1000 | 1000  | 500 | 667 |
+| Speclibm | 1000 | 1000  | 500 | 667 |
 
-  The `MinorCPU` model does not use `cpu_cluster.clk_domain.clock` as shown here `children=clk_domain cpu cpu_clk_domain cpu_voltage_domain dvfs_handler l2 mem_ctrls membus redirect_paths0 redirect_paths1 redirect_paths2 redirect_paths3 tol2bus voltage_domain`. Found in `config.ini` so we cant tell which one is clocked at `1.5GHz` only from the `stats.txt` and `config.ini` files.Looking at the `config.json` file we understand that when the processor is started for the first time it starts with the default 1000 ticks/cycle <br />
-  
-        "work_begin_ckpt_count": 0, 
-        "clk_domain": {
-            "name": "clk_domain", 
-            "clock": [
-                1000
-            ], 
-            "init_perf_level": 0, 
-            "voltage_domain": "system.voltage_domain", 
-            "eventq_index": 0, 
-            "cxx_class": "SrcClockDomain", 
-            "path": "system.clk_domain", 
-            "type": "SrcClockDomain", 
-            "domain_id": -1
-        }, 
-        
- <br />
- 
-  and then changes to 667 ticks/cycle.<br />
-  
-            "dvfs_handler": {
-            "enable": false, 
-            "name": "dvfs_handler", 
-            "sys_clk_domain": "system.clk_domain", 
-            "transition_latency": 100000000, 
-            "eventq_index": 0, 
-            "cxx_class": "DVFSHandler", 
-            "domains": [], 
-            "path": "system.dvfs_handler", 
-            "type": "DVFSHandler"
-        }, 
-        "work_end_exit_count": 0, 
-        "type": "System", 
-        "voltage_domain": {
-            "name": "voltage_domain", 
-            "eventq_index": 0, 
-            "voltage": [
-                1.0
-            ], 
-            "cxx_class": "VoltageDomain", 
-            "path": "system.voltage_domain", 
-            "type": "VoltageDomain"
-        }, 
-        "cache_line_size": 64, 
-        "boot_osflags": "a", 
-        "work_cpus_ckpt_count": 0, 
-        "thermal_components": [], 
-        "path": "system", 
-        "cpu_clk_domain": {
-            "name": "cpu_clk_domain", 
-            "clock": [
-                667
-            ], 
-            "init_perf_level": 0, 
-            "voltage_domain": "system.cpu_voltage_domain", 
-            "eventq_index": 0, 
-            "cxx_class": "SrcClockDomain", 
-            "path": "system.cpu_clk_domain", 
-            "type": "SrcClockDomain", 
-            "domain_id": -1
-        },
-        
-        
-  <br />
-This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same or increase.The possible bandwidth of the frequency will be from 1.5 GHZ to 3 GHz. <br />
+The "MinorCPU" model with the original frequency had system.clk_domain.clock at 1000 ticks/cycle and system.cpu_clk_domain.clock at 500 ticks/cycle after the change in both cases became as follows system.clk_domain. clock remained the same as the original (at 1000 ticks/cycle) but the change was seen in system.cpu_clk_domain.clock which became 667 ticks/cycle.By searching the config.json file we can see which systems are clocked at 1.5GHz which are as follows tol2bus, cpu(tags,itb,walker),dtb,dcache, l2.
+<br />    
 
-<br />
-<br />
+This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same. <br />
 
 | BenchMarks | New Execution time (s) | 
 | :---: | :---: | 
@@ -239,4 +181,4 @@ This is so that the processor can work at maximum speed with the other subsystem
 | Speclibm | 0.205034 |
 
 <br />
-There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change = 1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
+There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change  1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
