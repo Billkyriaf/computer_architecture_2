@@ -1,0 +1,6 @@
+Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
+specsjeng_l1d_size_0	7.057758	0.121835	0.000020	0.999910
+specsjeng_l1d_size_1	7.054582	0.121833	0.000020	0.999948
+specsjeng_l1d_size_2	7.054508	0.121831	0.000020	0.999972
+specsjeng_l1d_size_3	7.054581	0.121831	0.000020	0.999976
+specsjeng_l1d_size_4	7.054490	0.121830	0.000020	0.999983

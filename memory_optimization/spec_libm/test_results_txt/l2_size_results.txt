@@ -1,0 +1,4 @@
+Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
+specslibm_l2_size_0	2.623668	0.060971	0.000093	0.999944
+specslibm_l2_size_1	2.622539	0.060971	0.000093	0.999944
+specslibm_l2_size_2	2.620140	0.060971	0.000093	0.999944
