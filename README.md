@@ -101,7 +101,7 @@ The number of executed instructions is found int his entry in the [stats.txt](sp
     system.cpu.discardedOps   NumberOFExecutedInstructions   # Number of ops (including micro ops) which were discarded before commit
 
 
-> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded.
+The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded.
 
 <br />
 
@@ -674,12 +674,12 @@ The same as the `L1 icache associativity` stands here too. Also here there are v
 
 Considering the exponentially increasing cost of memory as its size increases, as well as the increasing cost of memory of the same capacity as we get closer to the processor, we came up with a cost function which consists of coefficients larger for l1 than for l2 and at the same time the variable representing the capacity of memory at the l1 level is squared to show the difference in the construction price. Furthermore, the associativity coefficient is larger or equal in l1 than in l2 and additive since increasing complexity adds to the cost function. As for the cachelize size, we simply chose a coefficient based on the best value we had in the above simulations (128 Byte) in order to convert it to a graded size as well and eliminate the units.
 
-costFunction = (l1d_size) ^ 2 / 64(kΒ ^ 2) + (l1i_size) ^ 2 / 64(kΒ ^ 2) + (l2_size) / 2048kΒ + (l1d_assoc) / 2 + (l1i_assoc) / 2 + (l2_assoc) / 4 + cacheline_size / 128B 
+costFunction = (l1d_size) ^ 2 / 64(kΒ ^ 2) + (l1i_size) ^ 2 / 32(kΒ ^ 2) + (l2_size) / 2048kΒ + (l1d_assoc) / 2 + (l1i_assoc) / 2 + (l2_assoc) / 4 + cacheline_size / 64B 
 
 When we have in associativity with full associativity automaton we will ignore the fraction and get as 15000
 <br />
 
- * Specbzip final_cost = 9561
- * Specmcf final_cost = 1096
- * Specjeng final_cost = 2069
- * Speclibm final_cost = 2055
+ * Specbzip final_cost = 10586
+ * Specmcf final_cost = 1161
+ * Specjeng final_cost = 3109
+ * Speclibm final_cost = 3080
