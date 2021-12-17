@@ -73,30 +73,30 @@ The following benchmarks were run in order to produce the information needed:
 ## 1.1. The total number of committed instructions
 The table below we shows the numbers of committed instructions along with the executed instructions.<br />
 
-| BenchMarks | Committed Instructions | Executed Instructions | Memory Types  |
-| :--------: | :--------------------: | :-------------------: | :-----------: |
-|  Specbzip  |       100000001        |       100196363       | DDR3_1600_8x8 |
-|  Specmcf   |       100000000        |       101102729       | DDR3_1600_8x8 |
-| Spechmmer  |       100000000        |       101102729       | DDR3_1600_8x8 |
-| Specsjeng  |       100000000        |       184174857       | DDR3_1600_8x8 |
-|  Speclibm  |       100000000        |       100003637       | DDR3_1600_8x8 |
+
+| BenchMarks | Committed Instructions | Executed Instructions | Memory Types | 
+| :---: | :---: | :---: | :---: |
+| Specbzip | 100000001 | 100190646 | DDR3_1600_8x8 |
+| Specmcf | 100000000 | 100690949  | DDR3_1600_8x8 |
+| Spechmmer | 100000000 | 100974536 | DDR3_1600_8x8 |
+| Specsjeng | 100000000 | 100004279 | DDR3_1600_8x8 | 
+| Speclibm | 100000000 | 100002680 | DDR3_1600_8x8 |
 
 <br />
-The number of committed instructions are found in this entry in the [stats.txt](spec_results) file: 
 
-    system.cpu.committedInsts   NumberOFCommitted Instructions   # Number of instructions committed
+
+The number of commited instructions are found in this entry in the [stats.txt](spec_results) file: 
+
+    system.cpu.committedInsts   NumberOFCommittedInstructions   # Number of instructions committed
       
 <br />
 
 The number of executed instructions is found int his entry in the [stats.txt](spec_results) file:
       
-    system.cpu.committedOps   NumberOFExecuted Instructions   # Number of ops (including micro ops) committed
+    system.cpu.discardedOps   NumberOFExecutedInstructions   # Number of ops (including micro ops) which were discarded before commit
 
-<br />
 
-> The executed instructions are always more or at least equal to the committed instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not always be correct. In those cases the executed instructions are never committed to the registers and instead are discarded. This becomes apparent in the 4th benchmark where the executed program has many for loops hence it has many branch instructions that the branch predictor tries to "guess" the outcome. 
-
-Where it NumberOFCommitted Instructions  is 100000000 instructions executed with a limit by the benchmark and NumberOFExecuted Instructions you can see its results in the table below.This difference between committed instructions and executed instructions is due to the dependency on for loops and branches for which it is possible to predict whether they are taken or notTaken by continuing to do the calculations and that is why there are more executed than committed instructions. This is especially apparent in the 4th benchmark where the executed program has many for loops for which it tries to "guess" what will happen in the next iteration of each loop to be executed.In this particular case there is a big failure to predict and that is why it calculates many more. <br />
+> The executed instructions are allways more or at least equal to the commited instructions. This happens because the CPU simulated supports speculative execution. With speculative execution the CPU does not need to wait for the calculation of the branch instructions but as the name suggests it speculates on the result of the branch and continues execution based on this speculation. The predicted result will not allways be correct. In those cases the executed instructions are never commited to the registers and instead are discarded.
 
 <br />
 
@@ -143,7 +143,13 @@ The number of accesses are found here:
 
 <br />
 
-> In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say that if we miss the L1 cache in total including data and instructions and how many total accesses we did from the DRAM memory then after subtracting them we will get how many accesses we did for the second hidden memory level L2 cache. (δεν ειμαι σιγουρος για αυτο)
+
+In case gem5 didn't give us this information about the number of accesses to the L2 cache we could say:<br />
+
+    system.l2.overall_accesses::.cpu.inst             numberA                       # number of overall (read+write) accesses
+    system.l2.overall_accesses::.cpu.data             numberB                       # number of overall (read+write) accesses
+<br />    
+If we add the numbers numberA + numberB we will get the total number of accesses to the L2 cache (read+write). 
 
 <br />
 <br />
@@ -187,9 +193,37 @@ These are found here:
 
 Here we have the total miss rates for the L1 Data cache, L1 Instruction cache and L2 cache.
 
+
 <img src="graph/graph.png"> <br />
 
 I notice that in the 2 latest benchmark speclibm, specsjeng there are big miss L2 cache for both instances and data, this is probably due to the existence of for loops and branches that create problems when there is no provision for them. In the spechmmer benchmark we see that we have almost no L1 miss rate and a small percentage of L2 cache miss.For the specmcf benchmark there is a lot of L2 data miss rate and finally in the specbzip benchmark we see that we have a large L2 instructions miss rate.
+
+
+# 3. Simulation Parameters for  frequency 1.5GHz
+Now we will do the same procedure with the benchmakrs but add `--cpu-clock=1.5GHz` <br />
+
+     $ ./build/ARM/gem5.opt -d spec_results_newClock/specsjeng configs/example/se.py --cpu-type=MinorCPU --cpu-clock=1.5GHz --caches --l2cache -c spec_cpu2006/458.sjeng/src/specsjeng -o "spec_cpu2006/458.sjeng/data/test.txt" -I 100000000
+     $ ./build/ARM/gem5.opt -d spec_results_newClock/speclibm configs/example/se.py --cpu-type=MinorCPU --cpu-clock=1.5GHz --caches --l2cache -c spec_cpu2006/470.lbm/src/speclibm -o "20 spec_cpu2006/470.lbm/data/lbm.in 0 1 spec_cpu2006/470.lbm/data/100_100_130_cf_a.of" -I 100000000 
+ 
+ <br />
+     
+| BenchMarks | Old system.clk_domain.clock | New system.clk_domain.clock | Old system.cpu_clk_domain.clock | New system.cpu_clk_domain.clock | 
+| :---: | :---: | :---: |:---: |:---: |
+| Specsjeng | 1000 | 1000  | 500 | 667 |
+| Speclibm | 1000 | 1000  | 500 | 667 |
+
+The "MinorCPU" model with the original frequency had system.clk_domain.clock at 1000 ticks/cycle and system.cpu_clk_domain.clock at 500 ticks/cycle after the change in both cases became as follows system.clk_domain. clock remained the same as the original (at 1000 ticks/cycle) but the change was seen in system.cpu_clk_domain.clock which became 667 ticks/cycle.By searching the config.json file we can see which systems are clocked at 1.5GHz which are as follows tol2bus, cpu(tags,itb,walker),dtb,dcache, l2.
+<br />    
+
+This is so that the processor can work at maximum speed with the other subsystems with which it is speed-dependent. Adding another processor will dramatically increase the speed at which each instruction is executed but there must be a good understanding of how to write to memory as long as it is the same size as before and has the same bandwidth, the frequency is likely to remain the same. <br />
+
+| BenchMarks | New Execution time (s) | 
+| :---: | :---: | 
+| Specsjeng | 0.581937  |
+| Speclibm | 0.205034 |
+
+<br />
+There is no perfect scaling as from the two specific benchmarks from the above table you can see that with the new processor frequency there is a slight increase in execution time due to the fact that the bandwidth of the external memory remains the same and the transfer rate does not change  1.6 x 8 x 8 x 8 x 1/8 = 12.8GBps which means that writes and any data dependency on other parts of the program have to be delayed.
 
 
 
@@ -630,3 +664,4 @@ The same as the `L1 icache associativity` stands here too. Also here there are v
 <img src="graph/l2_cache.png"> <br />
 <img src="graph/l2_assoc.png"> <br />
 <img src="graph/cacheline.png"> <br />
+
