@@ -1,0 +1,9 @@
+Benchmarks	system.cpu.cpi	system.cpu.dcache.overallMissRate::total	system.cpu.icache.overallMissRate::total	system.l2.overallMissRate::total
+specsjeng_cacheline_size_0	21.927489	0.487302	0.000029	0.999994
+specsjeng_cacheline_size_1	11.665813	0.243654	0.000022	0.999988
+specsjeng_cacheline_size_2	7.054508	0.121831	0.000020	0.999972
+specsjeng_cacheline_size_3	4.985905	0.060922	0.000015	0.999823
+specsjeng_cacheline_size_4	3.715593	0.030472	0.000011	0.999167
+specsjeng_cacheline_size_5	3.071745	0.015279	0.000010	0.993572
+specsjeng_cacheline_size_6	2.756658	0.007724	0.000010	0.972190
+specsjeng_cacheline_size_7	2.653106	0.004024	0.000011	0.898117
